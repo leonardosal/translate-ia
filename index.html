@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TranslateIA</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TranslateIA</h1>
+            <div class="language-selector">
+                <label for="targetLanguage">Traduzir para:</label>
+                <select id="targetLanguage">
+                    <option value="inglês">English</option>
+                    <option value="português">Português</option>
+                    <option value="espanhol">Español</option>
+                    <option value="francês">Français</option>
+                    <option value="alemão">Deutsch</option>
+                    <option value="italiano">Italiano</option>
+                    <option value="japonês">日本語</option>
+                    <option value="chinês">中文</option>
+                    <option value="russo">Русский</option>
+                    <option value="árabe">العربية</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <label for="textInput">Texto para traduzir:</label>
+            <textarea id="textInput" placeholder="Digite o texto aqui..."></textarea>
+        </div>
+
+        <div class="context-section">
+            <label for="contextInput">Contexto da tradução (opcional):</label>
+            <input type="text" id="contextInput" placeholder="Ex: espanhol mexicano, formal, técnico, coloquial...">
+        </div>
+
+        <div class="button-section">
+            <button id="translateButton">Traduzir</button>
+        </div>
+
+        <div class="output-section">
+            <div class="output-header">
+                <label for="translationOutput">Tradução:</label>
+                <button id="copyButton" class="copy-button" style="display: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copiar
+                </button>
+            </div>
+            <div id="translationOutput" class="translation-output">
+                <div class="loading" id="loadingSpinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>Traduzindo...</span>
+                </div>
+                <div id="translationText"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
