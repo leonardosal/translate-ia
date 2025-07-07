@@ -15,11 +15,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "electron": "^37.2.0",
     "openai": "^5.8.2"
   },
   "devDependencies": {
-    "electron-builder": "^24.13.3"
+    "electron": "^37.2.0",
+    "electron-builder": "^25.0.2"
   },
   "build": {
     "appId": "com.translateia.app",
@@ -34,12 +34,20 @@
     ],
     "mac": {
       "category": "public.app-category.productivity",
+      "identity": null,
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   }
 }
