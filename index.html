@@ -9,21 +9,29 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>TranslateIA</h1>
-            <div class="language-selector">
-                <label for="targetLanguage">Traduzir para:</label>
-                <select id="targetLanguage">
-                    <option value="inglês">English</option>
-                    <option value="português">Português</option>
-                    <option value="espanhol">Español</option>
-                    <option value="francês">Français</option>
-                    <option value="alemão">Deutsch</option>
-                    <option value="italiano">Italiano</option>
-                    <option value="japonês">日本語</option>
-                    <option value="chinês">中文</option>
-                    <option value="russo">Русский</option>
-                    <option value="árabe">العربية</option>
-                </select>
+            <div class="header-left">
+                <h1>TranslateIA</h1>
+            </div>
+            <div class="header-center">
+                <div class="language-selector">
+                    <label for="targetLanguage">Traduzir para:</label>
+                    <select id="targetLanguage">
+                        <option value="espanhol">Español</option>
+                        <option value="inglês">English</option>
+                        <option value="português">Português</option>
+                        <option value="francês">Français</option>
+                        <option value="alemão">Deutsch</option>
+                        <option value="italiano">Italiano</option>
+                        <option value="japonês">日本語</option>
+                        <option value="chinês">中文</option>
+                        <option value="russo">Русский</option>
+                        <option value="árabe">العربية</option>
+                    </select>
+                </div>
+            </div>
+            <div class="header-right">
+                <button id="pinButton" class="pin-button">📌</button>
+                <button id="configButton" class="config-button">⚙️</button>
             </div>
         </div>
 
@@ -58,6 +66,32 @@
                     <span>Traduzindo...</span>
                 </div>
                 <div id="translationText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Modal -->
+    <div id="configModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configurações da API</h2>
+                <button id="closeModal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="config-section">
+                    <label for="baseUrlInput">Base URL da API (opcional):</label>
+                    <input type="text" id="baseUrlInput" placeholder="https://api.openai.com/v1">
+                    <small>Deixe em branco para usar a API padrão do OpenAI</small>
+                </div>
+                <div class="config-section">
+                    <label for="apiKeyInput">API Key:</label>
+                    <input type="password" id="apiKeyInput" placeholder="sk-...">
+                    <small>Se Base URL estiver configurada, será usado valor padrão 'test'</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveConfigButton" class="save-button">Salvar</button>
+                <button id="cancelConfigButton" class="cancel-button">Cancelar</button>
             </div>
         </div>
     </div>

@@ -1,9 +1,35 @@
-require('dotenv').config();
 const { app, BrowserWindow, ipcMain, Menu, Tray, nativeImage } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 let mainWindow;
 let tray;
+
+function getConfigPath() {
+  return path.join(app.getPath('userData'), 'config.json');
+}
+
+function getConfig() {
+  try {
+    const configPath = getConfigPath();
+    if (fs.existsSync(configPath)) {
+      const configData = fs.readFileSync(configPath, 'utf8');
+      return JSON.parse(configData);
+    }
+  } catch (error) {
+    console.error('Erro ao ler configuração:', error);
+  }
+  return { apiKey: 'test', baseURL: '', alwaysOnTop: true };
+}
+
+function saveConfig(config) {
+  try {
+    const configPath = getConfigPath();
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+  } catch (error) {
+    console.error('Erro ao salvar configuração:', error);
+  }
+}
 
 function createTray() {
   // Use the translate.png icon for the tray
@@ -49,11 +75,13 @@ function createTray() {
 }
 
 function createWindow() {
+  const config = getConfig();
+  
   mainWindow = new BrowserWindow({
     width: 500,
-    height: 400,
-    resizable: true,
-    alwaysOnTop: true,
+    height: 500,
+    resizable: false,
+    alwaysOnTop: config.alwaysOnTop !== false,
     frame: true,
     show: false, // Don't show until ready
     webPreferences: {
@@ -123,8 +151,11 @@ app.on('before-quit', () => {
 ipcMain.handle('translate-text', async (event, text, targetLanguage, context = '') => {
   const OpenAI = require('openai');
   
+  const config = getConfig();
+  
   const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: config.apiKey || 'test',
+    baseURL: config.baseURL || undefined
   });
 
   try {
@@ -162,9 +193,9 @@ ipcMain.handle('translate-text', async (event, text, targetLanguage, context = '
 
 ipcMain.handle('get-languages', () => {
   return [
+    { code: 'espanhol', name: 'Español' },
     { code: 'português', name: 'Português' },
     { code: 'inglês', name: 'English' },
-    { code: 'espanhol', name: 'Español' },
     { code: 'francês', name: 'Français' },
     { code: 'alemão', name: 'Deutsch' },
     { code: 'italiano', name: 'Italiano' },
@@ -173,4 +204,22 @@ ipcMain.handle('get-languages', () => {
     { code: 'russo', name: 'Русский' },
     { code: 'árabe', name: 'العربية' }
   ];
+});
+
+ipcMain.handle('get-config', () => {
+  return getConfig();
+});
+
+ipcMain.handle('save-config', (_, config) => {
+  saveConfig(config);
+  return true;
+});
+
+ipcMain.handle('toggle-always-on-top', () => {
+  if (mainWindow) {
+    const isAlwaysOnTop = mainWindow.isAlwaysOnTop();
+    mainWindow.setAlwaysOnTop(!isAlwaysOnTop);
+    return !isAlwaysOnTop;
+  }
+  return false;
 });
